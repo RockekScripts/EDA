@@ -1,109 +1,4 @@
-﻿/*
-* stack_eda_array.h
-*
-* Implementación del TAD pila con arrays estáticos
-*
-* Estructuras de Datos y Algoritmos
-* Facultad de Informática
-* Universidad Complutense de Madrid
-*
-* Copyright (c) 2017 Enrique Martín Martín. All rights reserved.
-*/
-
-#ifndef STACK_EDA_ARRAY_H_
-#define STACK_EDA_ARRAY_H_
-
-
-#include <stdexcept>
-
-template <typename T>
-class stack {
-private:
-	static const int TAM = 6; // tamaño
-
-							  // número de elementos en la pila
-	size_t nelems;
-
-	// array estático de TAM elementos de tipo T
-	T elems[TAM];
-
-public:
-
-	// constructor: pila vacía
-	stack();
-
-	// destructor (por defecto)
-	~stack() = default;
-
-	// constructor por copia (por defecto)
-	stack(stack<T> const& other) = default;
-
-	// operador de asignación (por defecto)
-	stack<T> & operator=(stack<T> const& other) = default;
-
-	// apilar un elemento
-	void push(T const& elem);
-
-	// consultar la cima
-	T const& top() const;
-
-	// desapilar el elemento en la cima
-	void pop();
-
-	// consultar si la pila está vacía
-	bool empty() const;
-
-	// consultar el tamaño de la pila
-	size_t size() const;
-};
-
-
-template<typename T>
-stack<T>::stack() : nelems(0) {}
-
-template<typename T>
-void stack<T>::push(T const& elem) { // O(1)
-	if (nelems == TAM) {
-		throw std::domain_error("Imposible apilar en pila llena");
-	}
-	else {
-		elems[nelems] = elem;
-		nelems++;
-	}
-}
-
-template<typename T>
-T const& stack<T>::top() const { // O(1)
-	if (nelems == 0) {
-		throw std::domain_error("Cima de pila vacía");
-	}
-	else {
-		return elems[nelems - 1];
-	}
-}
-
-template<typename T>
-void stack<T>::pop() { // O(1)
-	if (nelems == 0) {
-		throw std::domain_error("Desapilar en pila vacía");
-	}
-	else {
-		nelems--;
-	}
-}
-
-template<typename T>
-bool stack<T>::empty() const {  // O(1)
-	return size() == 0;
-}
-
-template<typename T>
-size_t stack<T>::size() const { // O(1)
-	return nelems;
-}
-
-
-#endif /* STACK_EDA_ARRAY_H_ */
+﻿
 
 // Grupo VJ13 Colin Ulrich Cop, Francisco Solano Lopez-Bleda de Castro
 // Comentario general sobre la solución,
@@ -115,6 +10,7 @@ size_t stack<T>::size() const { // O(1)
 #include <assert.h>
 #include <stdio.h>
 #include <algorithm>
+#include <stack>
 
 
 
@@ -123,8 +19,8 @@ size_t stack<T>::size() const { // O(1)
 // Se va sacando cada elemento de la pila con su respectivo signo, se mete en otra auxiliar y se hacen los calculos.
 // 
 template<typename T>
-int resolver(stack<T> pila) {
-	stack<int> pilaAux;
+int resolver(std::stack<T> pila) {
+	std::stack<int> pilaAux;
 	char aux;
 	int	 num;
 	while (!pila.empty()) {
@@ -162,13 +58,15 @@ void resuelveCaso() {
 	int num;
 	std::cin >> num;
 	char var;
-	stack<char> pila;
+	std::stack<char> pila;
 	for (int i = 0; i < num; i++)
 	{
 		std::cin >> var;
 		pila.push(var);
 	}
-	std::cout << resolver(pila) << "\n";
+	if (!pila.empty())
+		std::cout << resolver(pila);
+	std::cout <<  "\n";
 	// escribir sol
 
 
